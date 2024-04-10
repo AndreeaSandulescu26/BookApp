@@ -108,7 +108,7 @@
             android:src="@drawable/ic_pdf_add_white"
             app:tint="@color/white"
             app:fabCustomSize="50dp"
-            android:backgroundTint="@color/purple_500"/>
+            android:backgroundTint="@color/orange"/>
 
 </LinearLayout>
 

@@ -88,6 +88,14 @@ public class DashboardAdminActivity extends AppCompatActivity {
             }
         });
 
+        //handle click, start pdf add screen
+        binding.addPdfFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardAdminActivity.this, PdfAddActivity.class));
+            }
+        });
+
 
     }
 
