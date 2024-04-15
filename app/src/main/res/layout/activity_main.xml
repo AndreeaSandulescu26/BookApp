@@ -21,10 +21,24 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/iconIv"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="Welcome to Book App"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:gravity="center"
+        android:layout_marginTop="80dp"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:text="Welcome to"
+        android:fontFamily="@font/lato_regular"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iconIv"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_marginTop="130dp"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:text="@string/welcome_text"
+        android:fontFamily="@font/cormorantgaramond_semibolditalic"/>
 
     <Button
         android:id="@+id/loginBtn"
@@ -34,15 +48,18 @@
         android:layout_marginBottom="10dp"
         android:text="Login"
         android:background="@drawable/shape_button01"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:fontFamily="@font/lato_bold"/>
 
     <Button
         android:id="@+id/skipBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/shape_button02"
         android:text="Continue Without Login"
-        android:textColor="@color/orange"/>
+        android:textColor="@color/blue"
+        android:fontFamily="@font/lato_bold"/>
 
 </RelativeLayout>

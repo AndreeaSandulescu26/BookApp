@@ -29,10 +29,10 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
     private Context context;
     public ArrayList<ModelCategory> categoryArrayList, filterList;
 
-    //view binding
+    // view binding
     private RowCategoryBinding binding;
 
-    //instance of our filter class
+    // instance of our filter class
     private FilterCategory filter;
 
     public AdapterCategory(Context context, ArrayList<ModelCategory> categoryArrayList) {
@@ -52,21 +52,21 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
 
     @Override
     public void onBindViewHolder(@NonNull HolderCategory holder, int position) {
-        //get data
+        // obtinem datele
         ModelCategory model = categoryArrayList.get(position);
         String id = model.getId();
         String category = model.getCategory();
         String uid = model.getUid();
         long timestamp = model.getTimestamp();
 
-        //set data
+        // setam datele
         holder.categoryTv.setText(category);
 
-        //handle click, delete category
+        // facem click, stergem categorie
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //confirm delete dialog
+                // confirm delete dialog
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Delete")
                         .setMessage("Are you sure you want to delete this category?")
@@ -90,7 +90,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
     }
 
     private void deleteCategory(ModelCategory model, HolderCategory holder) {
-        //get id of category to delete
+        // luam id-ul categ de sters
         String id = model.getId();
         //Firebase DB > Categories > categoryId
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
@@ -99,14 +99,14 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        //deleted successfully
+                        //stergere cu succes
                         Toast.makeText(context, "Successfully deleted!", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //failed to delete
+                        // stergere failed
                         Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -125,10 +125,10 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.Holder
         return filter;
     }
 
-    /* View Holder Class To Hold UI Views For row_category.xml */
+    /* View Holder Class ca sa pastram UI Views pt row_category.xml */
     class HolderCategory extends RecyclerView.ViewHolder{
 
-        //ui views of row_category.xml
+        //ui views din row_category.xml
         TextView categoryTv;
         ImageButton deleteBtn;
         public HolderCategory(@NonNull View itemView) {

@@ -50,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        //handle click, go back
+        // facem click, go back
         binding.registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-        //handle click, begin register
+        // facem click, begin register
         binding.registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,9 +70,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     private String name = "", email = "", password = "";
     private void validateData() {
-        /*Inainte sa cream contul, validam datele*/
+        // Inainte sa cream contul, validam datele
 
-        //get Data
+        // preluam datele
         name = binding.nameEt.getText().toString().trim();
         email = binding.emailEt.getText().toString().trim();
         password = binding.passwordEt.getText().toString().trim();
@@ -80,19 +80,19 @@ public class RegisterActivity extends AppCompatActivity {
 
         //validare date
         if (TextUtils.isEmpty(name)){
-            //name edit text is empty => introdu nume
+            // name edit text is empty => introdu nume
             Toast.makeText(this, "Enter your name..", Toast.LENGTH_SHORT).show();
         }
         else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            //email edit text is empty sau nu e valid => nu poti continua in cazul asta
+            // email edit text is empty sau nu e valid => nu poti continua in cazul asta
             Toast.makeText(this, "Invalid email pattern..!", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(password)){
-            //password edit text is empty => introdu parola
+            // password edit text is empty => introdu parola
             Toast.makeText(this, "Enter password..", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(cPassword)){
-            //cPassword edit text is empty => introdu parola confirmata
+            // cPassword edit text is empty => introdu parola confirmata
             Toast.makeText(this, "Confirm password..!", Toast.LENGTH_SHORT).show();
         }
         else if (!password.equals(cPassword)){
@@ -110,19 +110,19 @@ public class RegisterActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating account..");
         progressDialog.show();
 
-        //create user in firebase auth
+        // cream user in firebase auth
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        //account creation success, now add in firebase realtime database
+                        // cont creat cu succes, acum adaugam in firebase realtime database
                         updateUserInfo();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
-                        //account creating failed
+                        // creare cont failed
                         progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -135,29 +135,29 @@ public class RegisterActivity extends AppCompatActivity {
         //timestamp
         long timestamp = System.currentTimeMillis();
 
-        //get current user uid, since user is registered so we can get now
+        // obtinem user uid curent, pt ca user e inregistrat
         String uid = firebaseAuth.getUid();
 
-        //setup data to add in db
+        //setup data ca sa adaugam in bd
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("uid", uid);
         hashMap.put("email", email);
         hashMap.put("name", name);
-        hashMap.put("profileImage", ""); //add empty, will do later
+        hashMap.put("profileImage", ""); // de adaugat mai trz !!
         hashMap.put("userType", "user");
         hashMap.put("timestamp", timestamp);
 
-        //set data to db
+        //setam datele in bd
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
         ref.child(uid)
                 .setValue(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        //data added to db
+                        // date adaugate in bd
                         progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, "Account created..", Toast.LENGTH_SHORT).show();
-                        //since user account is created so start dashboard of user
+                        // user e creat si este redirectionat la dashboard
                         startActivity(new Intent(RegisterActivity.this, DashboardUserActivity.class));
                         finish();
                     }
@@ -165,7 +165,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
-                        //data failed adding to db
+                        // datele au dat failed la incarcarea in bd
                         progressDialog.dismiss();
                         Toast.makeText(RegisterActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
 

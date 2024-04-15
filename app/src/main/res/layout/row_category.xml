@@ -20,8 +20,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Category Title"
+            android:fontFamily="@font/lato_regular"
             android:layout_weight="1"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:padding="5dp"/>
 
         <ImageButton
             android:id="@+id/deleteBtn"

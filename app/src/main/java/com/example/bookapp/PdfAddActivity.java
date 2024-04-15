@@ -46,12 +46,12 @@ public class PdfAddActivity extends AppCompatActivity {
     //progress dialog
     private ProgressDialog progressDialog;
 
-    //arraylist to hold pdf categories
+    //arraylist pentru pdf categories
     private ArrayList<ModelCategory> categoryArrayList;
 
     private static final int PDF_PICK_CODE = 1000;
 
-    //Tag for debugging
+    //Tag pentru debugging
     private static final String TAG = "ADD_PDF_TAG";
 
     @Override
@@ -69,7 +69,7 @@ public class PdfAddActivity extends AppCompatActivity {
         progressDialog.setTitle("Please wait..");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        //handle click, go to previous activity
+        // facem click, go back
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +77,7 @@ public class PdfAddActivity extends AppCompatActivity {
             }
         });
 
-        //handle click, attach pdf
+        // facem click, adaugam pdf
         binding.attachBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +85,7 @@ public class PdfAddActivity extends AppCompatActivity {
             }
         });
 
-        //handle click, pick category
+        // facem click, alegem categorie
         binding.categoryTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,7 +93,7 @@ public class PdfAddActivity extends AppCompatActivity {
             }
         });
 
-        //handle click, upload pdf
+        // facem click, incarcam pdf
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,15 +106,15 @@ public class PdfAddActivity extends AppCompatActivity {
 
     private String title = "", description = "", category = "";
     private void validateData() {
-        //Step 1: Validate data
+        // Pasul 1: Validam datele
         Log.d(TAG, "validateData: validating data..");
 
-        //get data
+        // obtinem datele
         title = binding.titleEt.getText().toString().trim();
         description = binding.descriptionEt.getText().toString().trim();
         category = binding.categoryTv.getText().toString().trim();
 
-        //validate data
+        // le validam
         if (TextUtils.isEmpty(title)){
             Toast.makeText(this, "Enter Title..", Toast.LENGTH_SHORT).show();
         } else if (TextUtils.isEmpty(description)) {
@@ -127,25 +127,25 @@ public class PdfAddActivity extends AppCompatActivity {
             Toast.makeText(this, "Pick PDF..", Toast.LENGTH_SHORT).show();
         }
         else {
-            //all data is valid, can upload now
+            // toate datele sunt validate deci putem incarca
             uploadPdfToStorage();
         }
     }
 
     private void uploadPdfToStorage() {
-        //Step 2: Upload PDF to firebase storage
+        // Pasul 2: incarcam PDF in firebase storage
         Log.d(TAG, "uploadPdfToStorage: uploading to storage..");
 
         //show progress
         progressDialog.setMessage("Uploading PDF..");
         progressDialog.show();
 
-        //timestamp
+        // timestamp
         long timestamp = System.currentTimeMillis();
 
-        //path of PDF in firebase storage
+        // path of PDF in firebase storage
         String filePathAndName = "Books/" + timestamp;
-        //storage reference
+        // storage reference
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
         storageReference.putFile(pdfUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -154,12 +154,12 @@ public class PdfAddActivity extends AppCompatActivity {
                         Log.d(TAG, "onSuccess: PDF uploaded to storage..");
                         Log.d(TAG, "onSuccess: getting PDF url..");
 
-                        //get pdf url
+                        // obtinem pdf url
                         Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                         while(!uriTask.isSuccessful());
                         String uploadedPdfUrl = " " + uriTask.getResult();
 
-                        //upload to firebase db
+                        // incarcam in firebase bd
                         uploadPdfInfoToDb(uploadedPdfUrl, timestamp);
                     }
                 })
@@ -174,14 +174,14 @@ public class PdfAddActivity extends AppCompatActivity {
     }
 
     private void uploadPdfInfoToDb(String uploadedPdfUrl, long timestamp) {
-        //Step 3: Upload PDF info to firebase db
+        // Pasul 3: incarcam PDF info in firebase bd
         Log.d(TAG, "uploadPdfToStorage: uploading PDF info to firebase db..");
 
         progressDialog.setMessage("Uploading PDF info..");
 
         String uid = firebaseAuth.getUid();
 
-        //setup data to upload
+        //setup data ca sa incarcam
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("uid", "" + uid);
         hashMap.put("id", "" + timestamp);
@@ -218,7 +218,7 @@ public class PdfAddActivity extends AppCompatActivity {
         Log.d(TAG, "loadPdfCategories: Loading pdf categories..");
         categoryArrayList = new ArrayList<>();
 
-        //db reference to load categories.. db > Categories
+        //db reference ca sa incarcam categoriile.. db > Categories
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -244,7 +244,7 @@ public class PdfAddActivity extends AppCompatActivity {
     private void categoryPickDialog() {
         Log.d(TAG, "categoryPickDialog: showing category pick dialog");
 
-        //get string array of categories from arraylist
+        // obtinem string array de categories din arraylist
         String[] categoriesArray = new String[categoryArrayList.size()];
         for(int i = 0; i < categoryArrayList.size(); i++){
             categoriesArray[i] = categoryArrayList.get(i).getCategory();
@@ -256,10 +256,10 @@ public class PdfAddActivity extends AppCompatActivity {
                 .setItems(categoriesArray, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //handle item click
-                        //get clicked item from list
+                        // facem click pe item
+                        // luam item-ul din list
                         String category = categoriesArray[which];
-                        //set to category textview
+                        //set la category textview
                         binding.categoryTv.setText(category);
 
                         Log.d(TAG, "onClick: Selected Category " + category);

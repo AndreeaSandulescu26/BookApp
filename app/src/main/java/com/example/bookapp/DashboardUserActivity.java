@@ -25,11 +25,11 @@ public class DashboardUserActivity extends AppCompatActivity {
         binding = ActivityDashboardUserBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //init firebase auth
+        // init firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
         checkUser();
 
-        //handle click, logout
+        // facem click, logout
         binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -40,17 +40,17 @@ public class DashboardUserActivity extends AppCompatActivity {
     }
 
     private void checkUser() {
-        //preluam user-ul curent
+        // preluam user-ul curent
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if(firebaseUser == null){
-            //nu este logat
+            // nu este logat
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }
         else {
             // este logat
             String email = firebaseUser.getEmail();
-            //set in textview of toolbar
+            // setam in textview din toolbar
             binding.subTitleTv.setText(email);
         }
     }

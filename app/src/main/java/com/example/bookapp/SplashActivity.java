@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
         //init firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //start main screen after 2 sec
+        // start main screen dupa 2 sec
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -42,7 +42,7 @@ public class SplashActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if(firebaseUser == null){
             // nu este logat
-            //start main screen
+            // start main screen
             startActivity(new Intent(SplashActivity.this, MainActivity.class));
             finish();
         }
@@ -53,9 +53,9 @@ public class SplashActivity extends AppCompatActivity {
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                            // get user type
+                            // preluam tipul user-ului
                             String userType = "" + snapshot.child("userType").getValue();
-                            //check user type
+                            // il verificam apoi
                             if(userType.equals("user")){
                                 startActivity(new Intent(SplashActivity.this, DashboardUserActivity.class));
                                 finish();

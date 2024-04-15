@@ -38,12 +38,12 @@ public class CategoryAddActivity extends AppCompatActivity {
         //init firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //configure progress dialog
+        //configuram progress dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait..");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        //handle click, go back
+        // facem click, go back
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +51,7 @@ public class CategoryAddActivity extends AppCompatActivity {
             }
         });
 
-        //handle click, begin upload category
+        // facem click, incepem sa incarcam categorii
         binding.submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,11 +62,11 @@ public class CategoryAddActivity extends AppCompatActivity {
 
     private String category = "";
     private void validateData() {
-        //before adding  validate data
+        // inainte sa adaugam date validate
 
-        //get data
+        // obtinem datele
         category = binding.categoryEt.getText().toString().trim();
-        //validate if not empty
+        // validam daca nu e empty
         if (TextUtils.isEmpty(category)){
             Toast.makeText(this, "Please enter category..", Toast.LENGTH_SHORT).show();
         }
@@ -77,28 +77,28 @@ public class CategoryAddActivity extends AppCompatActivity {
     }
 
     private void addCategoryFirebase() {
-        //show progress
+        // show progress
         progressDialog.setMessage("Adding category..");
         progressDialog.show();
 
-        //get timestamp
+        // get timestamp
         long timestamp = System.currentTimeMillis();
 
-        //setup info to add in firebase db
+        // setup info ca sa adaugam in firebase bd
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("id", ""+timestamp);
         hashMap.put("category", ""+category);
         hashMap.put("timestamp", timestamp);
         hashMap.put("uid", ""+firebaseAuth.getUid());
 
-        //add to firebase db .. Database root > Categories > categoryId > categ info
+        // adaugam in firebase bd .. Database root > Categories > categoryId > categ info
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Categories");
         ref.child(""+timestamp)
                 .setValue(hashMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        //category add success
+                        // categorie adaugata cu succes
                         progressDialog.dismiss();
                         Toast.makeText(CategoryAddActivity.this, "Category Added Successfully!", Toast.LENGTH_SHORT).show();
                     }
@@ -106,7 +106,7 @@ public class CategoryAddActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        //categ add failure
+                        //categ adaugata failed
                         progressDialog.dismiss();
                         Toast.makeText(CategoryAddActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }

@@ -21,6 +21,7 @@
             android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
             android:text="Dashboard Admin"
+            android:fontFamily="@font/lato_bold"
             android:textStyle="bold"
             android:textColor="@color/white" />
 
@@ -32,6 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/titleTv"
             android:text="abc@example.com"
+            android:fontFamily="@font/lato_regular"
             android:textColor="@color/white" />
 
         <ImageButton
@@ -53,15 +55,17 @@
     <EditText
         android:id="@+id/searchEt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_below="@+id/toolbarRL"
         android:hint="Search"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
-        android:drawableStart="@drawable/ic_delete_white"
+        android:fontFamily="@font/lato_regular"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="30dp"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="10dp"
         android:padding="10dp"
-        android:background="@color/white"
+        android:background="@drawable/shape_edittext01"
         android:textColorHint="@color/grey01" />
 
     <!--MODIFICA CU SEARCH mai sus la drawableStart-->
@@ -73,9 +77,10 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/row_category"
         android:layout_below="@+id/searchEt"
-        android:layout_margin="5dp"
+        android:layout_margin="30dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_above="@id/bottomLl" />
+        android:layout_above="@id/bottomLl"
+        />
 
 
     <LinearLayout
@@ -83,9 +88,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
         android:orientation="horizontal">
 
         <Button
@@ -93,11 +98,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Category"
+            android:fontFamily="@font/lato_bold"
             android:layout_weight="1"
             android:layout_marginEnd="10dp"
             android:background="@drawable/shape_button01"
             android:minHeight="50dp"
-            android:textAllCaps="false"
+            android:textAllCaps="true"
             android:textColor="@color/white"/>
 
         <!--Add Pdf-->
@@ -108,7 +114,7 @@
             android:src="@drawable/ic_pdf_add_white"
             app:tint="@color/white"
             app:fabCustomSize="50dp"
-            android:backgroundTint="@color/orange"/>
+            android:backgroundTint="@color/pink"/>
 
 </LinearLayout>
 

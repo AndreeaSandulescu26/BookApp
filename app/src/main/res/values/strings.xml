@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Book App</string>
-    <string name="new_user_signup">New user? <b>SignUp</b></string> <!-- make SignUp bold -->
+    <string name="app_name"><b>Book<font color="#F508F7"> Bloom</font></b></string>
+    <string name="category"><b>Add a new <font color="#F508F7">category</font></b></string>
+    <string name="new_book"><b>Add a new <font color="#F508F7">book</font></b></string>
+    <string name="new_user_signup">New user? <font color="#F508F7"><b> Sign Up</b></font></string>
+    <string name="welcome_text"><b>Book<font color="#F508F7"> Bloom</font></b></string>
 </resources>

@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setTitle("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
 
-        // handle click, go to register screen
+        // facem click, ne redirectioneaza pe ecranul de register
         binding.noAccountTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //handle click, begin login
+        // facem click, ne logam
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

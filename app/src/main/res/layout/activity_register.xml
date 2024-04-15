@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bckgr"
+    android:background="@drawable/categ_bckgr"
     tools:context=".RegisterActivity">
 
     <RelativeLayout
         android:id="@+id/toolbarRL"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="260dp"
         android:background="@drawable/shape_toolbar01">
 
         <ImageButton
@@ -28,7 +28,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:src="@drawable/logo" />
 
         <TextView
@@ -39,8 +39,8 @@
             android:layout_marginTop="10dp"
             android:text="Create New Account"
             android:textColor="@color/white"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="28sp"/>
+            android:fontFamily="@font/cormorantgaramond_bolditalic"
+            android:textSize="30sp"/>
 
     </RelativeLayout>
 
@@ -49,7 +49,7 @@
         android:layout_height="match_parent"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="225dp" >
+        android:layout_marginTop="310dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -65,11 +65,12 @@
                 <EditText
                     android:id="@+id/nameEt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_person_grey"
                     android:drawablePadding="10dp"
                     android:hint="Name"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textPersonName|textCapWords"
                     android:padding="16dp"
                     android:textColor="@color/black"
@@ -83,17 +84,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/nameTil"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/emailEt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_email_grey"
                     android:drawablePadding="10dp"
                     android:hint="E-mail"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textEmailAddress"
                     android:padding="16dp"
                     android:textColor="@color/black"
@@ -108,18 +110,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/emailTil"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 app:passwordToggleEnabled="true"
                 app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/passwordEt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_lock_grey"
                     android:drawablePadding="10dp"
                     android:hint="Password"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textPassword"
                     android:padding="16dp"
                     android:textColor="@color/black"
@@ -134,18 +137,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/passwordTil"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 app:passwordToggleEnabled="true"
                 app:hintEnabled="false">
 
                 <EditText
                     android:id="@+id/cPasswordEt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_lock_grey"
                     android:drawablePadding="10dp"
                     android:hint="Confirm Password"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textPassword"
                     android:padding="16dp"
                     android:textColor="@color/black"
@@ -163,7 +167,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_button01"
                 android:text="Register"
-                android:padding="16dp"
+                android:fontFamily="@font/lato_bold"
                 android:textColor="@color/white" />
 
 

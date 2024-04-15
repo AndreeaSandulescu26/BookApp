@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bckgr"
+    android:background="@drawable/categ_bckgr"
     tools:context=".LoginActivity">
 
     <RelativeLayout
         android:id="@+id/toolbarRL"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="260dp"
         android:background="@drawable/shape_toolbar01">
 
         <ImageView
@@ -18,7 +18,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:src="@drawable/logo" />
 
         <TextView
@@ -27,9 +27,9 @@
             android:layout_below="@id/iconIv"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:text="Please Login"
+            android:text="Login Now"
             android:textColor="@color/white"
-            android:fontFamily="sans-serif-condensed"
+            android:fontFamily="@font/cormorantgaramond_bolditalic"
             android:textSize="28sp"/>
 
     </RelativeLayout>
@@ -40,7 +40,7 @@
         android:layout_marginStart="30dp"
         android:layout_above="@+id/noAccountTv"
         android:layout_marginEnd="30dp"
-        android:layout_marginTop="225dp" >
+        android:layout_marginTop="310dp" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -56,11 +56,12 @@
                 <EditText
                     android:id="@+id/emailEt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:background="@drawable/shape_edittext01"
                     android:drawableStart="@drawable/ic_email_grey"
-                    android:drawablePadding="12dp"
+                    android:drawablePadding="10dp"
                     android:hint="E-mail"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textEmailAddress"
                     android:padding="16dp"
                     android:textColor="@color/black"
@@ -73,9 +74,9 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/passwordTil"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_below="@id/emailTil"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 app:passwordToggleEnabled="true"
                 app:hintEnabled="false">
 
@@ -87,6 +88,7 @@
                     android:drawableStart="@drawable/ic_lock_grey"
                     android:drawablePadding="12dp"
                     android:hint="Password"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textPassword"
                     android:padding="16dp"
                     android:textColor="@color/black"
@@ -105,6 +107,7 @@
                 android:layout_marginTop="5dp"
                 android:padding="5dp"
                 android:text="Forgot Password?"
+                android:fontFamily="@font/lato_regular"
                 android:textColor="@color/grey02" />
 
             <!-- Login Button -->
@@ -116,6 +119,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/shape_button01"
                 android:text="Login"
+                android:fontFamily="@font/lato_bold"
                 android:textColor="@color/white" />
 
 
@@ -132,6 +136,7 @@
         android:layout_centerHorizontal="true"
         android:padding="10dp"
         android:text="@string/new_user_signup"
-        android:textColor="@color/black" />
+        android:fontFamily="@font/lato_regular"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

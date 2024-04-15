@@ -22,16 +22,16 @@ import java.util.ArrayList;
 
 public class DashboardAdminActivity extends AppCompatActivity {
 
-    //view binding
+    // view binding
     private ActivityDashboardAdminBinding binding;
 
-    //firebase auth
+    // firebase auth
     private FirebaseAuth firebaseAuth;
 
-    //arraylist to store category
+    // arraylist to store category
     private ArrayList<ModelCategory> categoryArrayList;
 
-    //adapter
+    // adapter
     private AdapterCategory adapterCategory;
 
     @Override
@@ -40,13 +40,12 @@ public class DashboardAdminActivity extends AppCompatActivity {
         binding = ActivityDashboardAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //init firebase auth
+        // init firebase auth
         firebaseAuth = FirebaseAuth.getInstance();
         checkUser();
         loadCategories();
 
 
-        //edit text change listern, search
         binding.searchEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -55,7 +54,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //called as and when user type each letter
+                // e apelat ca si cand utiliz tasteaza fiecare litera
                 try {
                     adapterCategory.getFilter().filter(s);
                 }
@@ -71,7 +70,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
         });
 
 
-        //handle click, logout
+        // facem click, logout
         binding.logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,7 +79,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
             }
         });
 
-        //handle click, start category add screen
+        // facem click, start category add screen
         binding.addCategoryBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -88,7 +87,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
             }
         });
 
-        //handle click, start pdf add screen
+        // facem click, start pdf add screen
         binding.addPdfFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,18 +107,18 @@ public class DashboardAdminActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //clear arraylist before adding data into it
+                // facem un clear arraylist inainte sa adaugam date in el
                 categoryArrayList.clear();
                 for (DataSnapshot ds: snapshot.getChildren()){
-                    //get data
+                    //obtinem datele
                     ModelCategory model = ds.getValue(ModelCategory.class);
 
-                    //add to arraylist
+                    //adaugam in arraylist
                     categoryArrayList.add(model);
                 }
                 //setup adapter
                 adapterCategory = new AdapterCategory(DashboardAdminActivity.this, categoryArrayList);
-                //set adapter to recylcerview
+                //setam adapter in recylcerview
                 binding.categoriesRv.setAdapter(adapterCategory);
             }
 
@@ -141,7 +140,7 @@ public class DashboardAdminActivity extends AppCompatActivity {
         else {
             // este logat
             String email = firebaseUser.getEmail();
-            //set in textview of toolbar
+            //setam in textview din toolbar
             binding.subTitleTv.setText(email);
         }
     }
