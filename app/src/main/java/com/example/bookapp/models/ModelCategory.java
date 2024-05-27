@@ -1,4 +1,4 @@
-package com.example.bookapp;
+package com.example.bookapp.models;
 
 public class ModelCategory {
     // verificam sa folosim aceleasi sintaxe pt variabilele model ca in firebase
