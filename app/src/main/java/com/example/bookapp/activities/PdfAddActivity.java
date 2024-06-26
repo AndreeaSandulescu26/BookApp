@@ -1,4 +1,4 @@
-package com.example.bookapp;
+package com.example.bookapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -189,6 +189,8 @@ public class PdfAddActivity extends AppCompatActivity {
         hashMap.put("categoryId", "" + selectedCategoryId);
         hashMap.put("url", "" + uploadedPdfUrl);
         hashMap.put("timestamp", timestamp);
+        hashMap.put("viewsCount", 0);
+        hashMap.put("downloadsCount", 0);
 
         //db reference: DB > Books
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Books");

@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bckgr"
-    tools:context=".DashboardUserActivity">
+    tools:context=".activities.DashboardUserActivity">
 
+    <!--ToolBar-->
     <RelativeLayout
         android:id="@+id/toolbarRL"
         android:layout_width="match_parent"
@@ -49,5 +50,25 @@
 
     </RelativeLayout>
 
+    <!--Tabs-->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarRL"
+        android:layout_margin="5dp"
+        android:background="@android:color/transparent"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="0dp"
+        app:tabMode="scrollable"
+        app:tabUnboundedRipple="false"/>
+
+    <!--ViewPager : Swipe/Show/Change fragments-->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tabLayout"/>
 
 </RelativeLayout>

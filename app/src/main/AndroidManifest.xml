@@ -1,49 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- All required permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".MyApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.BookApp"
         tools:targetApi="s">
-        <activity
-            android:name=".PdfListAdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".PdfAddActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CategoryAddActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DashboardAdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".DashboardUserActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SplashActivity"
-            android:exported="true">
+
+        <activity android:name=".activities.PdfViewActivity"/>
+        <activity android:name=".activities.PdfDetailActivity"/>
+        <activity android:name=".activities.PdfEditActivity"/>
+        <activity android:name=".activities.PdfListAdminActivity"/>
+        <activity android:name=".activities.PdfAddActivity" />
+        <activity android:name=".activities.CategoryAddActivity"/>
+        <activity android:name=".activities.DashboardAdminActivity" />
+        <activity android:name=".activities.DashboardUserActivity"/>
+        <activity android:name=".activities.LoginActivity"/>
+        <activity android:name=".activities.RegisterActivity"/>
+        <activity android:name=".activities.MainActivity"/>
+        <activity android:name=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
