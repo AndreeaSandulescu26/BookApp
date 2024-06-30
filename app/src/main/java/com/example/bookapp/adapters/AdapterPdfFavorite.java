@@ -101,7 +101,7 @@ public class AdapterPdfFavorite extends RecyclerView.Adapter<AdapterPdfFavorite.
                         String date = MyApplication.formatTimestamp(Long.parseLong(timestamp));
 
                         MyApplication.loadCategory(categoryId,holder.categoryTv);
-                        MyApplication.loadPdfFromUrlSinglePage("" + bookUrl, "" + bookTitle, holder.pdfView, holder.progressBar, null);
+                        MyApplication.loadPdfFromUrlSinglePage("" + bookUrl, "" + bookTitle, holder.pdfView, holder.progressBar, null, "" + bookId);
                         MyApplication.loadPdfSize("" + bookUrl, "" + bookTitle, holder.sizeTv);
 
                         holder.titleTv.setText(bookTitle);

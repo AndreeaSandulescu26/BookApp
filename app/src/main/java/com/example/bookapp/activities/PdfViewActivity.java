@@ -84,7 +84,8 @@ public class PdfViewActivity extends AppCompatActivity {
 
         try {
            // Uri uri = Uri.parse(pdfUrl);
-            StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
+          //  StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
+            StorageReference reference = FirebaseStorage.getInstance().getReference("Books").child(bookId);
             reference.getBytes(Constants.MAX_BYTES_PDF)
                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override

@@ -282,7 +282,8 @@ public class PdfDetailActivity extends AppCompatActivity {
                                 "" + bookTitle,
                                 binding.pdfView,
                                 binding.progressBar,
-                                binding.pagesTv
+                                binding.pagesTv,
+                                "" + bookId
                         );
                         MyApplication.loadPdfSize(
                                 "" + bookUrl,

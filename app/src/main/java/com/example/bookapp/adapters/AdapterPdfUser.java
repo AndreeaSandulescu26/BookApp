@@ -67,7 +67,8 @@ public class AdapterPdfUser extends RecyclerView.Adapter<AdapterPdfUser.HolderPd
                 "" + title,
                 holder.pdfView,
                 holder.progressBar,
-                null
+                null,
+                "" + bookId
         );
         MyApplication.loadCategory(
                 "" + categoryId,

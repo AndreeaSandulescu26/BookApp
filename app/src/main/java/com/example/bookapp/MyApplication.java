@@ -166,7 +166,7 @@ public class MyApplication extends Application {
         }
     }
 
-    public static void loadPdfFromUrlSinglePage(String pdfUrl, String pdfTitle, PDFView pdfView, ProgressBar progressBar, TextView pagesTv) {
+    public static void loadPdfFromUrlSinglePage(String pdfUrl, String pdfTitle, PDFView pdfView, ProgressBar progressBar, TextView pagesTv, String bookId) {
         String TAG = "PDF_LOAD_SINGLE_TAG";
 //         Get url
         if (pdfUrl == null || pdfUrl.isEmpty()) {
@@ -177,9 +177,11 @@ public class MyApplication extends Application {
 
 //         Validate and parse the URL
         try {
-          Uri uri = Uri.parse(pdfUrl);
-            StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
-          //  StorageReference ref = FirebaseStorage.getInstance().getReference("Books").child(String.valueOf(uri));
+        //  Uri uri = Uri.parse(pdfUrl);
+          //  StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
+            System.out.println("URI " + pdfUrl);
+            StorageReference ref = FirebaseStorage.getInstance().getReference("Books").child(bookId);
+
               ref.getBytes(MAX_BYTES_PDF)
                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
@@ -269,7 +271,8 @@ public class MyApplication extends Application {
         //download from firebase storage using url
         try {
             Uri uri = Uri.parse(bookUrl);
-            StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(bookUrl);
+//            StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(bookUrl);
+            StorageReference reference = FirebaseStorage.getInstance().getReference("Books").child(bookId);
             reference.getBytes(Constants.MAX_BYTES_PDF)
                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override

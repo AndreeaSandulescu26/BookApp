@@ -87,6 +87,7 @@ public class AdapterPdfAdmin extends RecyclerView.Adapter<AdapterPdfAdmin.Holder
         String description = model.getDescription();
         String pdfUrl = model.getUrl();
         long timestamp = model.getTimestamp();
+        String bookId = model.getId();
 
         //convertim timestamp la formatul dd/mm/yyyy
         String formattedDate = MyApplication.formatTimestamp(timestamp);
@@ -106,7 +107,8 @@ public class AdapterPdfAdmin extends RecyclerView.Adapter<AdapterPdfAdmin.Holder
                 "" + title,
                 holder.pdfView,
                 holder.progressBar,
-                null
+                null,
+                "" + bookId
         );
         MyApplication.loadPdfSize(
                 "" + pdfUrl,
