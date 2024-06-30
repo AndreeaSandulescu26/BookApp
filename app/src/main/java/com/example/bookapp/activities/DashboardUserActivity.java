@@ -56,7 +56,16 @@ public class DashboardUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 firebaseAuth.signOut();
-                checkUser();
+                startActivity(new Intent(DashboardUserActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+
+        //facem click si deschidem profilul
+        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardUserActivity.this, ProfileActivity.class));
             }
         });
     }
@@ -166,9 +175,7 @@ public class DashboardUserActivity extends AppCompatActivity {
         // preluam user-ul curent
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if(firebaseUser == null){
-            // nu este logat
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            binding.subTitleTv.setText("Not logged in..");
         }
         else {
             // este logat

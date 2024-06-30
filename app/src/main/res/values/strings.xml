@@ -2,6 +2,11 @@
     <string name="app_name"><b>Book<font color="#F508F7"> Bloom</font></b></string>
     <string name="category"><b>Add a new <font color="#F508F7">category</font></b></string>
     <string name="new_book"><b>Add a new <font color="#F508F7">book</font></b></string>
+    <string name="edit_profile"><b>Edit <font color="#F508F7">Profile</font></b></string>
+    <string name="login"><b>Login <font color="#F508F7">Now</font></b></string>
+    <string name="register"><b>Create New <font color="#F508F7">Account</font></b></string>
+    <string name="forgotpassword"><b>Forgot <font color="#F508F7">Password</font></b></string>
+    <string name="editbookinfo"><b>Edit Book <font color="#F508F7">Info</font></b></string>
     <string name="new_user_signup">New user? <font color="#F508F7"><b> Sign Up</b></font></string>
     <string name="welcome_text"><b>Book<font color="#F508F7"> Bloom</font></b></string>
     <string name="back">Back</string>

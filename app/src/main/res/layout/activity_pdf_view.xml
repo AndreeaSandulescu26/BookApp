@@ -5,7 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.PdfViewActivity">
+    tools:context=".activities.PdfViewActivity"
+    android:background="@drawable/bckgr">
 
     <!--Toolbar-->
     <RelativeLayout
@@ -20,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_back_white"/>
 
@@ -32,6 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:text="Read Book"
+            android:fontFamily="@font/lato_bold"
             android:textColor="@color/white"
             android:textStyle="bold"/>
 
@@ -41,10 +43,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbarTitleTv"
+            android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
             android:text="N/N"
-            android:textColor="@color/white"
-            android:textSize="12sp"/>
+            android:fontFamily="@font/lato_regular"
+            android:textColor="@color/white"/>
 
     </RelativeLayout>
 

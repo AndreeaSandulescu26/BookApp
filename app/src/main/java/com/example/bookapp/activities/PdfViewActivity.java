@@ -83,7 +83,7 @@ public class PdfViewActivity extends AppCompatActivity {
         }
 
         try {
-            Uri uri = Uri.parse(pdfUrl);
+           // Uri uri = Uri.parse(pdfUrl);
             StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
             reference.getBytes(Constants.MAX_BYTES_PDF)
                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -136,3 +136,4 @@ public class PdfViewActivity extends AppCompatActivity {
 
 
 }
+

@@ -97,9 +97,22 @@ public class AdapterPdfAdmin extends RecyclerView.Adapter<AdapterPdfAdmin.Holder
         holder.dateTv.setText(formattedDate);
 
         //incarcam urm detalii cum ar fi categoria, pdf din url, marime pdf
-        MyApplication.loadCategory("" + categoryId, holder.categoryTv);
-        MyApplication.loadPdfFromUrlSinglePage("" + pdfUrl, "" + title, holder.pdfView, holder.progressBar);
-        MyApplication.loadPdfSize("" + pdfUrl, "" + title, holder.sizeTv);
+        MyApplication.loadCategory(
+                "" + categoryId,
+                holder.categoryTv
+        );
+        MyApplication.loadPdfFromUrlSinglePage(
+                "" + pdfUrl,
+                "" + title,
+                holder.pdfView,
+                holder.progressBar,
+                null
+        );
+        MyApplication.loadPdfSize(
+                "" + pdfUrl,
+                "" + title,
+                holder.sizeTv
+        );
 
         //facem click pe cele 3 puncte - moreBtn
         holder.moreBtn.setOnClickListener(new View.OnClickListener() {

@@ -26,6 +26,7 @@ import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,6 +35,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -58,6 +61,7 @@ public class MyApplication extends Application {
 
         return date;
     }
+
     public static void deleteBook(Context context, String bookId, String bookUrl, String bookTitle) {
         String TAG = "DELETE_BOOK_TAG";
 
@@ -162,7 +166,7 @@ public class MyApplication extends Application {
         }
     }
 
-    public static void loadPdfFromUrlSinglePage(String pdfUrl, String pdfTitle, PDFView pdfView, ProgressBar progressBar) {
+    public static void loadPdfFromUrlSinglePage(String pdfUrl, String pdfTitle, PDFView pdfView, ProgressBar progressBar, TextView pagesTv) {
         String TAG = "PDF_LOAD_SINGLE_TAG";
 //         Get url
         if (pdfUrl == null || pdfUrl.isEmpty()) {
@@ -175,7 +179,8 @@ public class MyApplication extends Application {
         try {
           Uri uri = Uri.parse(pdfUrl);
             StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
-            ref.getBytes(MAX_BYTES_PDF)
+          //  StorageReference ref = FirebaseStorage.getInstance().getReference("Books").child(String.valueOf(uri));
+              ref.getBytes(MAX_BYTES_PDF)
                     .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                         @Override
                         public void onSuccess(byte[] bytes) {
@@ -208,6 +213,11 @@ public class MyApplication extends Application {
                                         public void loadComplete(int nbPages) {
                                             progressBar.setVisibility(View.INVISIBLE);
                                             Log.d(TAG, "loadComplete: pdf loaded");
+
+                                            // daca param pagesTv nu e null, atunci setam nr pag
+                                            if (pagesTv != null){
+                                                pagesTv.setText("" + nbPages);
+                                            }
                                         }
                                     })
                                     .load();
@@ -237,37 +247,6 @@ public class MyApplication extends Application {
 
                         //setam la category text view
                         categoryTv.setText(category);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
-    public static void incrementBookViewCount(String bookId){
-        // 1. obt book views count
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Books");
-        ref.child(bookId)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        //obt views count
-                        String viewsCount = "" + snapshot.child("viewsCount").getValue();
-                        //in cazul null, inlocuim cu 0
-                        if (viewsCount.equals("") || viewsCount.equals("null")){
-                            viewsCount = "0";
-                        }
-
-                        // 2. incrementam views count
-                        long newViewsCount = Long.parseLong(viewsCount) + 1;
-
-                        HashMap<String, Object> hashMap= new HashMap<>();
-                        hashMap.put("viewsCount", newViewsCount);
-
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Books");
-                        reference.child(bookId)
-                                .updateChildren(hashMap);
                     }
 
                     @Override
@@ -374,6 +353,133 @@ public class MyApplication extends Application {
                     }
                 });
     }
+
+    public static void incrementBookViewCount(String bookId){
+        // 1. obt book views count
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Books");
+        ref.child(bookId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //obt views count
+                        String viewsCount = "" + snapshot.child("viewsCount").getValue();
+                        //in cazul null, inlocuim cu 0
+                        if (viewsCount.equals("") || viewsCount.equals("null")){
+                            viewsCount = "0";
+                        }
+
+                        // 2. incrementam views count
+                        long newViewsCount = Long.parseLong(viewsCount) + 1;
+
+                        HashMap<String, Object> hashMap= new HashMap<>();
+                        hashMap.put("viewsCount", newViewsCount);
+
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Books");
+                        reference.child(bookId)
+                                .updateChildren(hashMap);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+//    public static void loadPdfPageCount(Context context, String pdfUrl, TextView pagesTv){
+//        //incarcam fisierul pdf din firebase storage folosind url
+//        StorageReference storageReference = FirebaseStorage.getInstance().getReferenceFromUrl(pdfUrl);
+//        storageReference
+//                .getBytes(MAX_BYTES_PDF)
+//                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+//                    @Override
+//                    public void onSuccess(byte[] bytes) {
+//                        //fisier primit
+//
+//                        //incarcam pag pdf-ului utiliz libraria PdfView
+//                        PDFView pdfView = new PDFView(context, null);
+//                        pdfView.fromBytes(bytes)
+//                                .onLoad(new OnLoadCompleteListener() {
+//                                    @Override
+//                                    public void loadComplete(int nbPages) {
+//                                        pagesTv.setText("" + nbPages);
+//                                    }
+//                                });
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        //fisier neprimit
+//                    }
+//                });
+//    }
+
+
+
+    public static void addToFavorite(Context context, String bookId){
+        //putem adauga doar daca suntem logati
+        // 1. Verif ca user e logat
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null) {
+            //nelogat
+            Toast.makeText(context, "You're not logged in..", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            long timestamp = System.currentTimeMillis();
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("bookId", "" + bookId);
+            hashMap.put("timestamp", "" + timestamp);
+
+            //salvam la bd
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+            ref.child(firebaseAuth.getUid()).child("Favorites").child(bookId)
+                    .setValue(hashMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(context, "Added to your favorites list!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Failed to add to favorites due to " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    public static void removeFromFavorite(Context context, String bookId){
+        //putem sterge doar daca suntem logati
+        // 1. Verif ca user e logat
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() == null) {
+            //nelogat
+            Toast.makeText(context, "You're not logged in..", Toast.LENGTH_SHORT).show();
+        }
+        else{
+
+
+            //stergem din bd
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+            ref.child(firebaseAuth.getUid()).child("Favorites").child(bookId)
+                    .removeValue()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(context, "Removed from your favorites list!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(context, "Failed to remove from favorites due to " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
 }
 
 

@@ -97,6 +97,14 @@ public class DashboardAdminActivity extends AppCompatActivity {
             }
         });
 
+        //facem click si deschidem profilul
+        binding.profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardAdminActivity.this, ProfileActivity.class));
+            }
+        });
+
 
     }
 

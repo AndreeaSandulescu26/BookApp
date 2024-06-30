@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back_white"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:background="@android:color/transparent"/>
 
         <!--Titlu-->
@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:text="Books"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/lato_bold"
             android:textStyle="bold"
             android:layout_centerHorizontal="true"
             android:textColor="@color/white"/>
@@ -41,8 +42,10 @@
             android:id="@+id/subTitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_centerHorizontal="true"
             android:text="Category"
+            android:fontFamily="@font/lato_regular"
             android:textColor="@color/white"
             android:layout_below="@+id/titleTv"/>
 
@@ -52,11 +55,11 @@
     <EditText
         android:id="@+id/searchEt"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@color/white"
+        android:layout_height="50dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/shape_book"
         android:layout_below="@id/toolbarRL"
         android:padding="10dp"
         android:hint="Search"
@@ -70,7 +73,9 @@
         android:id="@+id/bookRv"
         android:layout_width="match_parent"
         android:layout_below="@+id/searchEt"
-        android:layout_margin="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="25dp"
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/row_pdf_admin"/>

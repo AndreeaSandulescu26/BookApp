@@ -1,25 +1,45 @@
 package com.example.bookapp.activities;
 
 import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.signature.ObjectKey;
 import com.example.bookapp.MyApplication;
+import com.example.bookapp.R;
+import com.example.bookapp.adapters.AdapterComment;
+import com.example.bookapp.adapters.AdapterPdfFavorite;
 import com.example.bookapp.databinding.ActivityPdfDetailBinding;
+import com.example.bookapp.databinding.DialogCommentAddBinding;
+import com.example.bookapp.models.ModelComment;
+import com.example.bookapp.models.ModelPdf;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.checkerframework.checker.units.qual.A;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PdfDetailActivity extends AppCompatActivity {
 
@@ -28,6 +48,12 @@ public class PdfDetailActivity extends AppCompatActivity {
 
     //pdf id, luat din intent
     String bookId, bookTitle, bookUrl;
+    boolean isInMyFavorite = false;
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
+    private ArrayList<ModelComment> commentArrayList;
+    private AdapterComment adapterComment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +66,21 @@ public class PdfDetailActivity extends AppCompatActivity {
 
         binding.downloadBookBtn.setVisibility(View.GONE);
 
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Please wait!");
+        progressDialog.setCanceledOnTouchOutside(false);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        if (firebaseAuth.getCurrentUser() != null){
+            checkIsFavorite();
+        }
+
         loadBookDetails();
+        loadComments();
         //increment book view count, de fiecare data cand incepe pag
         MyApplication.incrementBookViewCount(bookId);
+
+
 
         //facem click, go back
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +113,132 @@ public class PdfDetailActivity extends AppCompatActivity {
             }
         });
 
+        //facem click, adaugam/stergem favorite
+        binding.favoriteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (firebaseAuth.getCurrentUser() == null){
+                    Toast.makeText(PdfDetailActivity.this, "You're not logged in..", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    if (isInMyFavorite){
+                        //daca e, stergem
+                        MyApplication.removeFromFavorite(PdfDetailActivity.this, bookId);
+                    }
+                    else {
+                        //daca nu e, adaugam
+                        MyApplication.addToFavorite(PdfDetailActivity.this, bookId);
+                    }
+                }
+            }
+        });
+
+        //facem click, aratam dialogul de add comment
+        binding.addCommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //utiliz trb sa fie logat ca sa adauge comentarii
+                if (firebaseAuth.getCurrentUser() == null){
+                    Toast.makeText(PdfDetailActivity.this, "You're not logged in..", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    addCommentDialog();
+                }
+            }
+        });
+
+    }
+
+    private void loadComments() {
+        commentArrayList = new ArrayList<>();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Books");
+        ref.child(bookId).child("Comments")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        commentArrayList.clear();
+                        for (DataSnapshot ds : snapshot.getChildren()){
+                            ModelComment model = ds.getValue(ModelComment.class);
+                            commentArrayList.add(model);
+                        }
+                        adapterComment = new AdapterComment(PdfDetailActivity.this, commentArrayList);
+                        binding.commentsRv.setAdapter(adapterComment);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private String comment = "";
+    private void addCommentDialog() {
+        DialogCommentAddBinding commentAddBinding = DialogCommentAddBinding.inflate(LayoutInflater.from(this));
+
+        //setup alert dialog builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
+        builder.setView(commentAddBinding.getRoot());
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        //facem click si dismiss dialog
+        commentAddBinding.backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        //facem click si adaugam coment
+        commentAddBinding.submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //obt date
+                comment = commentAddBinding.commentEt.getText().toString().trim();
+                //validam datele
+                if (TextUtils.isEmpty(comment)){
+                    Toast.makeText(PdfDetailActivity.this, "Enter your comment..", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    alertDialog.dismiss();
+                    addComment();
+                }
+            }
+        });
+    }
+
+    private void addComment() {
+        progressDialog.setMessage("Adding comment..");
+        progressDialog.show();
+
+        String timestamp = "" + System.currentTimeMillis();
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("id", "" + timestamp);
+        hashMap.put("bookId", "" + bookId);
+        hashMap.put("timestamp", "" + timestamp);
+        hashMap.put("comment", "" + comment);
+        hashMap.put("uid", "" + firebaseAuth.getUid());
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Books");
+        ref.child(bookId).child("Comments").child(timestamp)
+                .setValue(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(PdfDetailActivity.this, "Comment added successfully!", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(PdfDetailActivity.this, "Failed to add comment due to : " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     //request storage permission
@@ -117,13 +281,19 @@ public class PdfDetailActivity extends AppCompatActivity {
                                 "" + bookUrl,
                                 "" + bookTitle,
                                 binding.pdfView,
-                                binding.progressBar
+                                binding.progressBar,
+                                binding.pagesTv
                         );
                         MyApplication.loadPdfSize(
                                 "" + bookUrl,
                                 "" + bookTitle,
                                 binding.sizeTv
                         );
+//                        MyApplication.loadPdfPageCount(
+//                                PdfDetailActivity.this,
+//                                bookUrl,
+//                                binding.pagesTv
+//                        );
 
                         //set data
                         binding.titleTv.setText(bookTitle);
@@ -139,4 +309,33 @@ public class PdfDetailActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void checkIsFavorite(){
+        //logat si verif daca e in lista de fav sau nu
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseAuth.getUid()).child("Favorites").child(bookId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        isInMyFavorite = snapshot.exists();
+                        if (isInMyFavorite){
+                            //exista in favorite
+                            binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_white, 0,0);
+                            binding.favoriteBtn.setText("Remove Favorite");
+                        }
+                        else{
+                            //nu exista in favorite
+                            binding.favoriteBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.ic_favorite_border_white, 0,0);
+                            binding.favoriteBtn.setText("Add Favorite");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
 }
